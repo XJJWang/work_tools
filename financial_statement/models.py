@@ -33,7 +33,7 @@ class CapitalFlow(models.Model):
 	capital_type = models.CharField(max_length=50, choices=CHOICES)
 
 	def __str__(self):
-		return self.project.name + self.section.name + self.accounts
+		return self.project.name + self.section.name + str(self.account)
 
 
 
