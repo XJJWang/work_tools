@@ -26,5 +26,11 @@ def query(request):
     return HttpResponse('chenggong')
 
 
-# def territorial_bond_details(account):
+def create_project(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        territorial_bond_total = request.POST.get("territorial_bond_total")
+        treasury_bond_total = request.POST.get("treasury_bond_total")
+    if request.method == "GET":
+        return render(request, 'financial_statement/create_project.html')
     

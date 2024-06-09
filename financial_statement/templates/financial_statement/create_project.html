@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>创建项目</title>
+</head>
+<body>
+
+    <div style="margin: 15% 40%;">
+        <h1>创建项目</h1>
+       <form action="/login/" method="post">
+            <p>
+                <label for="name">用户名：</label>
+                <input type="text" id="name" name="name" autofocus required />
+            </p>
+            <p>
+                <label for="treasury_bond_total">国债预计支付：</label>
+                <input type="number" id="treasury_bond_total" name="treasury_bond_total" required >
+            </p>
+            <p>
+                <label for="territorial_bond_total">地方债预计支付：</label>
+                <input type="number" id="treasury_bond_total" placeholder="地方债预计支付" name="territorial_bond_total" required >
+            </p>
+            <input type="submit" value="确定">
+        </form>
+    </div>
+
+</body>
+</html>
