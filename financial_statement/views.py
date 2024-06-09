@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .models import Project, Section, CapitalFlow
 
@@ -31,6 +31,11 @@ def create_project(request):
         name = request.POST.get("name")
         territorial_bond_total = request.POST.get("territorial_bond_total")
         treasury_bond_total = request.POST.get("treasury_bond_total")
+        new_project = Project()
+        new_project.name = name
+        new_project.territorial_bond_total = territorial_bond_total
+        new_project.treasury_bond_total = treasury_bond_total
+        new_project.save()
+        return redirect('/financial_statement/')
     if request.method == "GET":
         return render(request, 'financial_statement/create_project.html')
-    
