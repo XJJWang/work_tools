@@ -39,3 +39,7 @@ def create_project(request):
         return redirect('/financial_statement/')
     if request.method == "GET":
         return render(request, 'financial_statement/create_project.html')
+
+
+def main(request):
+    return render(request, 'financial_statement/main.html')
