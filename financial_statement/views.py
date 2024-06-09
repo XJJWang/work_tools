@@ -20,13 +20,9 @@ def query(request):
     first_object_name = first_object.name
     treasury_capital_flow = CapitalFlow.objects.filter(project__name=first_object_name).filter(capital_type='Treasury')
     territorial_capital_flow = CapitalFlow.objects.filter(project__name=first_object_name).filter(capital_type='Territorial')
-    lst = list()
-    for a in treasury_capital_flow:
-        account = a.account
-        lst.append(account)
+
+    lst = [t.account for t in treasury_capital_flow]
     print(lst)
-    total = sum(lst)
-    print(total)
     return HttpResponse('chenggong')
 
 
