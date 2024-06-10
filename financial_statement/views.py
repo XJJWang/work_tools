@@ -18,8 +18,10 @@ def index(request):
 def query(request):
     first_object = Project.objects.first()
     first_object_name = first_object.name
-    treasury_capital_flow = CapitalFlow.objects.filter(project__name=first_object_name).filter(capital_type='Treasury')
-    territorial_capital_flow = CapitalFlow.objects.filter(project__name=first_object_name).filter(capital_type='Territorial')
+    treasury_capital_flow = CapitalFlow.objects.filter(
+        project__name=first_object_name).filter(capital_type='Treasury')
+    territorial_capital_flow = CapitalFlow.objects.filter(
+        project__name=first_object_name).filter(capital_type='Territorial')
 
     lst = [t.account for t in treasury_capital_flow]
     print(lst)
