@@ -1,17 +1,19 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Project, Section, CapitalFlow
+from .models import Project, CapitalFlow, User
 
 
 def index(request):
     first_object = Project.objects.first()
-    first_object_name = first_object.name
-    capital_flow = CapitalFlow.objects.filter(project__name=first_object_name)
     name = first_object.name
     territorial_bond_total = first_object.territorial_bond_total
     treasury_bond_total = first_object.treasury_bond_total
-    return render(request, 'financial_statement/index.html', {'name': name, 'territorial_bond_total': territorial_bond_total, 'treasury_bond_total': treasury_bond_total})
+    return render(request,
+                  'financial_statement/index.html', {'name': name,
+                                                     'territorial_bond_total': territorial_bond_total,
+                                                     'treasury_bond_total': treasury_bond_total})
     # 导入模型
 
 
@@ -20,8 +22,6 @@ def query(request):
     first_object_name = first_object.name
     treasury_capital_flow = CapitalFlow.objects.filter(
         project__name=first_object_name).filter(capital_type='Treasury')
-    territorial_capital_flow = CapitalFlow.objects.filter(
-        project__name=first_object_name).filter(capital_type='Territorial')
 
     lst = [t.account for t in treasury_capital_flow]
     print(lst)
@@ -45,3 +45,25 @@ def create_project(request):
 
 def main(request):
     return render(request, 'financial_statement/main.html')
+
+
+def login(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        message = "Welcome!"
+        if username.strip() and password:
+            try:
+                user = User.objects.get(username=username)
+            except ObjectDoesNotExist:
+                message = 'User not exist'
+                return render(request, 'financial_statement/login.html', {'message': message})
+            if user.password == password:
+                return redirect('/financial_statement/main/')
+            else:
+                message = 'Password is uncorrect'
+                return render(request, 'financial_statement/login.html', {'message': message})
+        else:
+            return render(request, 'financial_statement/login.html', {'message': message})
+
+    return render(request, 'financial_statement/login.html')

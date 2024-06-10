@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link href="/static/bootstrap5/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Login</title>
+  </head>
+<body class="text-center">
+
+<main class="form-signin w-100 m-auto">
+  <form action="/financial_statement/login/" method="post">
+    <img class="mb-4" src="/static/bootstrap-logo.svg" alt="" width="72" height="57">
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+          {% if message %}
+                    <div class="alert alert-warning">{{ message }}</div>
+                  {% endif %}
+                  {% csrf_token %}
+
+    <div class="form-floating">
+      <input type="text" class="form-control" name="username" id="floatingInput" placeholder="name@example.com">
+      <label for="floatingInput">Username</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
+      <label for="floatingPassword">Password</label>
+    </div>
+
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    <p class="mt-5 mb-3 text-muted">© 1994–2024</p>
+  </form>
+</main>
+
+
+
+  
+
+</body>
