@@ -48,6 +48,8 @@ def main(request):
 
 
 def login(request):
+    if request.session.get('is_login', None):
+        return redirect('/financial_statement/main/')
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -59,6 +61,9 @@ def login(request):
                 message = 'User not exist'
                 return render(request, 'financial_statement/login.html', {'message': message})
             if user.password == password:
+                request.session['is_login'] = True
+                request.session['user_id'] = user.id
+                request.session['name'] = user.name
                 return redirect('/financial_statement/main/')
             else:
                 message = 'Password is uncorrect'
@@ -67,3 +72,12 @@ def login(request):
             return render(request, 'financial_statement/login.html', {'message': message})
 
     return render(request, 'financial_statement/login.html')
+
+
+def view_my_project(request):
+    user_id = request.session.get('user_id', None)
+    if not user_id:
+        return redirect('/financial_statement/main/')
+    user = User.objects.get(pk=user_id)
+    print(user.name)
+    return render(request, 'financial_statement/my_project.html')
