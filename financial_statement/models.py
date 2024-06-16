@@ -65,3 +65,5 @@ class Permission(models.Model):
     ]
     user_permission = models.CharField(max_length=50, choices=CHOICES)
     date_joined = models.DateField()
+    def __str__(self):
+        return self.user.name + ' | ' +self.project.name
