@@ -75,11 +75,9 @@ def login(request):
 
 
 def view_my_project(request):
-    user_id = request.session.get('user_id', None)
-    if not user_id:
-        return redirect('/financial_statement/main/')
-    user = User.objects.get(pk=user_id)
-    projects = Permission.objects.filter(user=user)
-    # print(projects)
-    print(locals())
+    # user_id = request.session.get('user_id', None)
+    # if not user_id:
+    #     return redirect('/financial_statement/main/')
+    # user = User.objects.get(pk=user_id)
+    # projects = Permission.objects.filter(user=user)
     return render(request, 'financial_statement/my_project.html', locals())

@@ -1,20 +1,12 @@
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <link href="/static/bootstrap5/css/bootstrap.min.css" rel="stylesheet">
 
-    <title>Hello, world!</title>
-  </head>
+{% extends "financial_statement/base.html" %}
 
-<body>
-<ul>
+{% block title %}My project{% endblock %}
+
+{% block content %}
+    <ul>
 {% for p in projects %}
     <li>{{ p.project.name}}</li>
 {% endfor %}
 </ul>
-</body>
-</html>
+{% endblock %}

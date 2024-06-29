@@ -18,7 +18,7 @@
         }
     </style>
 
-    <title>Hello, world!</title>
+    <title>{% block title %}Hello, world{% endblock %}</title>
   </head>
   <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Fifth navbar example">
@@ -60,15 +60,9 @@
     </div>
   </nav>
 
-
-      <div class="container content d-flex align-items-center justify-content-center">
-        <div class="text-center">
-            <h1 class="display-4 mb-4">欢迎来到网站</h1>
-            <p class="lead mb-4">很显然，这个网站还在开发当中，可以提出您的宝贵建议。</p>
-            <button class="btn btn-primary">了解更多</button>
-        </div>
-    </div>
-
+    {% block content %}
+    {% endblock %}
+     
 
 <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top bg-dark text-white">
   <div class="col-md-4 d-flex align-items-center">
