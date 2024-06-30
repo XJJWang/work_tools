@@ -4,9 +4,26 @@
 {% block title %}My project{% endblock %}
 
 {% block content %}
-    <ul>
-{% for p in projects %}
-    <li>{{ p.project.name}}</li>
-{% endfor %}
-</ul>
+    <div class="container mt-5">
+        <h1 class="mb-4">项目列表</h1>
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+          {% endfor %} -->
+       
+          {% for p in projects %}
+          
+            <div class="col">
+                <div class="card h-100">
+                    <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="项目图片">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ p.project.name }}</h5>
+                        <p class="card-text">这是项目 1 的简短描述。可以在这里添加更多详细信息。</p>
+                        <a href="#" class="btn btn-primary">查看详情</a>
+                    </div>
+                </div>
+            </div>
+          {% endfor %}
+
+
 {% endblock %}
