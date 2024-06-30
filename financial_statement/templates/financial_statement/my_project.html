@@ -9,7 +9,6 @@
         
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
-          {% endfor %} -->
        
           {% for p in projects %}
           
@@ -19,10 +18,13 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ p.project.name }}</h5>
                         <p class="card-text">这是项目 1 的简短描述。可以在这里添加更多详细信息。</p>
-                        <a href="#" class="btn btn-primary">查看详情</a>
-                    </div>
+  <a href="#" class="btn btn-primary me-2">财务报表</a>
+<a href="#" class="btn btn-primary me-2">资料速查</a>
+<a href="#" class="btn btn-primary">档案室管理</a>
                 </div>
             </div>
+          </div>
+
           {% endfor %}
 
 
