@@ -1,0 +1,13 @@
+{% extends "financial_statement/base.html" %}
+
+{% block title %}Financial{% endblock %}
+
+{% block content %}
+
+       
+          {% for i in infos %}
+          <ul class="row">
+  <li class="col-sm-6 col-md-4">{{ i.name }}:&nbsp;&nbsp;&nbsp;  {{ i.content }}</li>
+</ul>
+          {% endfor %}
+{% endblock %}

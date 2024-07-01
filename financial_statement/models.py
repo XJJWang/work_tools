@@ -67,3 +67,13 @@ class Permission(models.Model):
     date_joined = models.DateField()
     def __str__(self):
         return self.user.name + ' | ' +self.project.name
+
+
+class ProjectInfo(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    content = models.CharField(max_length=400)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name

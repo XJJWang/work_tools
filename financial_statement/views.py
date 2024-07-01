@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Project, CapitalFlow, User, Permission
+from .models import Project, CapitalFlow, User, Permission, ProjectInfo
 
 
 def index(request):
@@ -82,3 +82,14 @@ def view_my_project(request):
     user = User.objects.get(pk=DEFAULT_USER_ID)
     projects = Permission.objects.filter(user=user)
     return render(request, 'financial_statement/my_project.html', locals())
+
+
+def financial(request):
+    return render(request, 'financial_statement/financial.html', locals())
+
+
+def view_information(request):
+    DEFAULT_PROJECT_ID = 1
+    project = Project.objects.get(pk=DEFAULT_PROJECT_ID)
+    infos = ProjectInfo.objects.filter(project=project)
+    return render(request, 'financial_statement/project_infomation.html',locals())
