@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Project, CapitalFlow, User, Permission, ProjectInfo
+from .models import Project, CapitalFlow, User, Permission, ProjectInfo, Section
 
 
 def index(request):
@@ -81,6 +81,8 @@ def view_my_project(request):
     #     return redirect('/financial_statement/main/')
     user = User.objects.get(pk=DEFAULT_USER_ID)
     projects = Permission.objects.filter(user=user)
+    print(locals())
+    
     return render(request, 'financial_statement/my_project.html', locals())
 
 
@@ -96,4 +98,24 @@ def view_information(request):
 
 
 def view_finantial_details(request):
+    DEFAULT_PROJECT_ID = 1
+    project = Project.objects.get(pk=DEFAULT_PROJECT_ID)
+    section = Section.objects.filter(project=project)
+    section_flow_list = list()
+    for s in section:
+        capital_flow = CapitalFlow.objects.filter(section=s)
+        section_flow_list .append(capital_flow)
+
+    
+    calc_flow_by_section(section_flow_list)
+
     return render(request, 'financial_statement/financial_details.html', locals())
+
+
+
+def calc_flow_by_section(section_flow_list):
+    for sfl in section_flow_list:
+        for s in sfl:
+            print(s.account) 
+
+

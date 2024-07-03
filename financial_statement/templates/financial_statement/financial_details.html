@@ -4,53 +4,43 @@
 
 {% block content %}
 
-<div class="container">
-  <div class="row">
-    <!-- 第一个表格 -->
-    <div class="col-md-6 mb-4">
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col" colspan="2">表格1总标题</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="table-danger">
-              <td>内容1</td>
-              <td>内容2</td>
-            </tr>
-            <tr class="table-warning">
-              <td>内容3</td>
-              <td>内容4</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+<style>
+  .table-responsive {
+    height: 100%;
+  }
+  .table {
+    height: calc(100% - 20px); /* 减去一些边距 */
+  }
+</style>
 
-    <!-- 第二个表格 -->
-    <div class="col-md-6 mb-4">
-      <div class="table-responsive">
+
+<div class="container">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for table in tables %}
+    <div class="col">
+      <div class="table-responsive h-100">
         <table class="table table-bordered table-hover">
           <thead class="table-dark">
             <tr>
-              <th scope="col" colspan="2">表格2总标题</th>
+              <th scope="col" colspan="2">{{ table.title }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="table-info">
-              <td>内容A</td>
-              <td>内容B</td>
+            {% for row in table.data %}
+            <tr class="{{ row.class }}">
+              <td>{{ row.col1 }}</td>
+              <td>{{ row.col2 }}</td>
             </tr>
-            <tr class="table-success">
-              <td>内容C</td>
-              <td>内容D</td>
-            </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
     </div>
+    {% endfor %}
   </div>
 </div>
+
+
+
+
 {% endblock %}

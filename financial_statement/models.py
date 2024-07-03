@@ -19,7 +19,7 @@ class Section(models.Model):
         max_digits=11, decimal_places=2, default=0.00)
 
     def __str__(self):
-        return self.name + self.project.name
+        return self.project.name + '|' + self.name  
 
 
 class CapitalFlow(models.Model):
@@ -33,8 +33,8 @@ class CapitalFlow(models.Model):
     OPTION_B = 'Treasury'
 
     CHOICES = [
-        (OPTION_A, 'Territorial'),
-        (OPTION_B, 'Treasury'),
+        (OPTION_A, '地方债'),
+        (OPTION_B, '国债'),
     ]
     capital_type = models.CharField(max_length=50, choices=CHOICES)
     remark = models.CharField(max_length=100, null=True, blank=True)
