@@ -7,10 +7,18 @@ class Bookshelf(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = '书架'
+        verbose_name_plural = '书架'
+
 class Project(models.Model):
     name = models.CharField(max_length=100)
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = '项目'
+        verbose_name_plural = '项目'
 
 class Filebook(models.Model):
     bookshelf = models.ForeignKey(Bookshelf,on_delete=models.CASCADE)
@@ -21,7 +29,12 @@ class Filebook(models.Model):
         )
     name = models.CharField(max_length=200)
     def __str__(self):
-        return self.name
+        return self.name + '   |   ' + self.project.name + '   |   ' + self.bookshelf.name
+
+    class Meta:
+        verbose_name = '档案盒'
+        verbose_name_plural = '档案盒'
+
 
 
 class Document(models.Model):
@@ -38,4 +51,9 @@ class Document(models.Model):
     )
     principal = models.CharField(max_length=100)
     def __str__(self):
-        return self.name
+        return self.name + '   |   ' + self.filebook.name + '   |   ' + self.filebook.project.name
+
+    class Meta:
+        verbose_name = '文件'
+        verbose_name_plural = '文件'
+
