@@ -1,0 +1,56 @@
+{% extends "financial_statement/base.html" %}
+
+{% block title %}财务报表详情{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <!-- 第一个表格 -->
+    <div class="col-md-6 mb-4">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col" colspan="2">表格1总标题</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-danger">
+              <td>内容1</td>
+              <td>内容2</td>
+            </tr>
+            <tr class="table-warning">
+              <td>内容3</td>
+              <td>内容4</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 第二个表格 -->
+    <div class="col-md-6 mb-4">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col" colspan="2">表格2总标题</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-info">
+              <td>内容A</td>
+              <td>内容B</td>
+            </tr>
+            <tr class="table-success">
+              <td>内容C</td>
+              <td>内容D</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

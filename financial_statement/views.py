@@ -93,3 +93,7 @@ def view_information(request):
     project = Project.objects.get(pk=DEFAULT_PROJECT_ID)
     infos = ProjectInfo.objects.filter(project=project)
     return render(request, 'financial_statement/project_infomation.html',locals())
+
+
+def view_finantial_details(request):
+    return render(request, 'financial_statement/financial_details.html', locals())

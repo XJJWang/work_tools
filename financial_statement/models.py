@@ -37,6 +37,7 @@ class CapitalFlow(models.Model):
         (OPTION_B, 'Treasury'),
     ]
     capital_type = models.CharField(max_length=50, choices=CHOICES)
+    remark = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.project.name + self.section.name + str(self.account)
