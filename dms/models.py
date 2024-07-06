@@ -26,8 +26,9 @@ class Project(models.Model):
     name = models.CharField(max_length=100, verbose_name="项目名")
     year = models.CharField(max_length=4, verbose_name="项目年份")
     intro = models.TextField(verbose_name="项目简介",null=True, blank=True)
+    short_name = models.CharField(max_length=50, verbose_name="项目简称")
     def __str__(self):
-        return self.name
+        return self.short_name if self.short_name else self.name
 
     class Meta:
         verbose_name = '项目'
@@ -71,8 +72,17 @@ class Document(models.Model):
     principal = models.CharField(max_length=100, verbose_name="交接人")
     remark = models.CharField(max_length=200, null=True, blank=True, verbose_name="备注")
     put_in_date =  models.DateField(auto_now_add=False,  verbose_name="入库时间", null=True, blank=True)
+    short_name = models.CharField(max_length=50, verbose_name="文件简称", blank=True, null=True)
     def __str__(self):
-        return self.name + '   |   ' + self.filebook.name + '   |   ' + self.filebook.project.name
+       
+        
+        if self.short_name:
+            name = self.short_name
+        else:
+            name = self.name
+        return name + '   |   ' + self.filebook.name + '   |   ' + self.filebook.project.short_name
+
+
 
     class Meta:
         verbose_name = '文件'
