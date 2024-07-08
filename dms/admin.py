@@ -1,14 +1,44 @@
 from django.contrib import admin
 from django.contrib.admin.widgets import AutocompleteSelect
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+from django.http import HttpResponse
 
+from import_export.admin import ImportExportModelAdmin
 
 from .models import Bookshelf, Project, Filebook, Document, Cell
+from .resources import DocumentResource
+
 
 admin.site.register(Bookshelf)
 admin.site.register(Project)
 
-admin.site.register(Document)
+class FilebookFilter(admin.SimpleListFilter):
+    title = _('Filebook')
+    parameter_name = 'filebook'
+
+    def lookups(self, request, model_admin):
+        filebooks = Filebook.objects.all()
+        return [(f.id, f.name) for f in filebooks]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(filebook_id=self.value())
+        return queryset
+
+class ProjectFilter(admin.SimpleListFilter):
+    title = _('Project')
+    parameter_name = 'project'
+
+    def lookups(self, request, model_admin):
+        projects = Project.objects.all()
+        return [(p.id, p.name) for p in projects]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(filebook__project_id=self.value())
+        return queryset
+
 
 @admin.register(Filebook)
 class FilebookAdmin(admin.ModelAdmin):
@@ -19,18 +49,24 @@ class CellAdmin(admin.ModelAdmin):
     search_fields = ['bookshelf__name']
 
 
-# @admin.register(Filebook)
-# class FilebookAdmin(admin.ModelAdmin):
-#     # 其他 admin 配置...
+@admin.register(Document)
+class DocumentAdmin(ImportExportModelAdmin):
+    resource_class = DocumentResource
+    list_display = ['display_str', 'filebook']
+    list_filter = ['filebook__project', 'filebook']
+    search_fields = ['short_name']
+    def display_str(self, obj):
+        return str(obj)  # 返回__str__方法的结果
+    display_str.short_description = '名称'  # 设置列的标题
 
-#     def get_form(self, request, obj=None, **kwargs):
-#         form = super().get_form(request, obj, **kwargs)
-#         form.base_fields['cell'].widget = AutocompleteSelect(
-#             Filebook._meta.get_field('cell').remote_field,
-#             admin.site,
-#         )
-#         return form
+    actions = ['export_selected_documents']
+    
+    def export_selected_documents(self, request, queryset):
+        resource = self.resource_class()
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=selected_documents.csv'
+        return response
 
-# @admin.register(Cell)
-# class CellAdmin(admin.ModelAdmin):
-#     search_fields = ['name']  # 根据需要选择搜索字段
+    export_selected_documents.short_description = "导出选中的文件为 CSV"
+

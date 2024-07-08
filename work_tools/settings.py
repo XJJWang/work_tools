@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'financial_statement',
     'dms',
+    'import_export',
 ]
 
 MIDDLEWARE = [
