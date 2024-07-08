@@ -78,6 +78,7 @@ class Document(models.Model):
     remark = models.CharField(max_length=200, null=True, blank=True, verbose_name="备注")
     put_in_date = models.DateField(auto_now_add=False, verbose_name="入库时间", null=True, blank=True)
     short_name = models.CharField(max_length=50, verbose_name="文件简称", blank=True, null=True)
+    document_file = models.FileField(upload_to='documents/', verbose_name="文件", null=True, blank=True)
 
     def __str__(self):
 

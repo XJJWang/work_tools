@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import include, path
+from django.conf import settings
+from django.conf.urls.static import static
 
 admin.site.site_header = "吗喽之家"  # 更改登录页面和管理页面的标题
 admin.site.site_title = "吗喽之家管理后台"  # 更改网站标题
@@ -11,3 +13,6 @@ urlpatterns = [
     path('dms/', include('dms.urls')),
     path('admin/', admin.site.urls),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
