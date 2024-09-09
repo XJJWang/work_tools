@@ -1,9 +1,10 @@
-from django.db import models
+from django.db import models # type: ignore
 
 
 class Project(models.Model):
     name = models.CharField(max_length=200)
     abbr = models.CharField(max_length=50, null=True, blank=True)
+    year = models.PositiveSmallIntegerField(blank=True, null=True)
     
     def __str__(self):
         return self.name
@@ -13,6 +14,8 @@ class ProjectInvestment(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     amount = models.DecimalField(
         max_digits=11, decimal_places=2, default=0.00)
+    def __str__(self):
+        return self.name + str(self.amount)
 
 
 class Section(models.Model):
