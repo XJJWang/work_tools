@@ -6,14 +6,8 @@ from .models import Project, CapitalFlow, User, Permission, ProjectInfo, Section
 
 
 def index(request):
-    first_object = Project.objects.first()
-    name = first_object.name
-    territorial_bond_total = first_object.territorial_bond_total
-    treasury_bond_total = first_object.treasury_bond_total
     return render(request,
-                  'financial_statement/index.html', {'name': name,
-                                                     'territorial_bond_total': territorial_bond_total,
-                                                     'treasury_bond_total': treasury_bond_total})
+                  'financial_statement/base.html')
     # 导入模型
 
 
