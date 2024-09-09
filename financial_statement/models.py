@@ -3,24 +3,26 @@ from django.db import models
 
 class Project(models.Model):
     name = models.CharField(max_length=200)
-    territorial_bond_total = models.DecimalField(
-        max_digits=11, decimal_places=2, default=0.00)
-    treasury_bond_total = models.DecimalField(
-        max_digits=11, decimal_places=2, default=0.00)
-
+    abbr = models.CharField(max_length=50, null=True, blank=True)
+    
     def __str__(self):
         return self.name
+
+class ProjectInvestment(models.Model):
+    name = models.CharField(max_length=200)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    amount = models.DecimalField(
+        max_digits=11, decimal_places=2, default=0.00)
 
 
 class Section(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    capital_total = models.DecimalField(
+    amount = models.DecimalField(
         max_digits=11, decimal_places=2, default=0.00)
 
     def __str__(self):
         return self.project.name + '|' + self.name  
-
 
 class CapitalFlow(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -28,15 +30,7 @@ class CapitalFlow(models.Model):
     pay_time = models.DateField()
     account = models.DecimalField(
         max_digits=11, decimal_places=2, default=0.00)
-
-    OPTION_A = 'Territorial'
-    OPTION_B = 'Treasury'
-
-    CHOICES = [
-        (OPTION_A, '地方债'),
-        (OPTION_B, '国债'),
-    ]
-    capital_type = models.CharField(max_length=50, choices=CHOICES)
+    capital_type = models.CharField(max_length=50)
     remark = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
