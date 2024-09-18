@@ -3,8 +3,7 @@ from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Project, CapitalFlow, User, Permission, ProjectInfo, Section
-
+from .models import Project, CapitalFlow, User, Permission, ProjectInfo, Section, ProjectInvestment
 
 def index(request):
     return render(request,
@@ -12,18 +11,72 @@ def index(request):
     # 导入模型
 
 
-def query(request):
-    first_object = Project.objects.first()
-    first_object_name = first_object.name
-    treasury_capital_flow = CapitalFlow.objects.filter(
-        project__name=first_object_name).filter(capital_type='Treasury')
+@csrf_exempt
+def add_project_investment_type(request):
+    if request.method == "POST":
+        project_pk= request.POST.get("pk")
+        project = Project.objects.get(pk=project_pk)
+        name = request.POST.get("name")
+        amount = request.POST.get('amount')
 
-    lst = [t.account for t in treasury_capital_flow]
-    print(lst)
-    return HttpResponse('chenggong')
+        new_investment_type = ProjectInvestment()
+        new_investment_type.name = name
+        new_investment_type.project = project
+        new_investment_type.amount = amount
+        new_investment_type.save()
+        return HttpResponse("Save investment type.")
+
+
+    if request.method == "GET":
+        return HttpResponse("GET investment type")
+
+
+@csrf_exempt
+def add_section(request):
+    if request.method == "POST":
+        project_pk = request.POST.get('pk')
+        project = Project.objects.get(pk=project_pk)
+        name = request.POST.get('name')
+        amount = request.POST.get('amount')
+
+        new_section = Section()
+        new_section.name = name
+        new_section.project = project
+        new_section.amount = amount
+        new_section.save()
+        return HttpResponse("Save section.")
+
+
+@csrf_exempt
+def add_capital_flow(request):
+    if request.method == "POST":
+        project_pk = request.POST.get('project_pk')
+        section_pk = request.POST.get('section_pk')
+        project = Project.objects.get(pk=project_pk)
+        section = Section.objects.get(pk=section_pk)
+
+        pay_time = request.POST.get('pay_time')
+        account = request.POST.get('account')
+        capital_type = request.POST.get('capital_type')
+        remark = request.POST.get('remark')
+
+        CapitalFlow.objects.create(
+    project=project,
+    section=section,
+    pay_time=pay_time,
+    account=account,
+    capital_type=capital_type,
+    remark=remark,
+)
+    return HttpResponse('Save capital flow.')
+
+
 
 def get_all_projects(request):
-    return HttpResponse('all projects')
+    projects = Project.objects.all()
+    for p in projects:
+        print(p.id)
+    return HttpResponse(projects)
 
 
 @csrf_exempt
@@ -47,33 +100,6 @@ def main(request):
     return render(request, 'financial_statement/main.html')
 
 
-def login(request):
-    if request.session.get('is_login', None):
-        return redirect('/financial_statement/main/')
-    if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        message = "Welcome!"
-        if username.strip() and password:
-            try:
-                user = User.objects.get(username=username)
-            except ObjectDoesNotExist:
-                message = 'User not exist'
-                return render(request, 'financial_statement/login.html', {'message': message})
-            if user.password == password:
-                request.session['is_login'] = True
-                request.session['user_id'] = user.id
-                request.session['name'] = user.name
-                return redirect('/financial_statement/main/')
-            else:
-                message = 'Password is uncorrect'
-                return render(request, 'financial_statement/login.html', {'message': message})
-        else:
-            return render(request, 'financial_statement/login.html', {'message': message})
-
-    return render(request, 'financial_statement/login.html')
-
-
 def view_my_project(request):
     DEFAULT_USER_ID = 1  # fuqiang
     # user_id = request.session.get('user_id', None)
@@ -86,36 +112,11 @@ def view_my_project(request):
     return render(request, 'financial_statement/my_project.html', locals())
 
 
-def financial(request):
-    return render(request, 'financial_statement/financial.html', locals())
-
-
 def view_information(request):
     DEFAULT_PROJECT_ID = 1
     project = Project.objects.get(pk=DEFAULT_PROJECT_ID)
     infos = ProjectInfo.objects.filter(project=project)
     return render(request, 'financial_statement/project_infomation.html',locals())
 
-
-def view_finantial_details(request):
-    DEFAULT_PROJECT_ID = 1
-    project = Project.objects.get(pk=DEFAULT_PROJECT_ID)
-    section = Section.objects.filter(project=project)
-    section_flow_list = list()
-    for s in section:
-        capital_flow = CapitalFlow.objects.filter(section=s)
-        section_flow_list .append(capital_flow)
-
-    
-    calc_flow_by_section(section_flow_list)
-
-    return render(request, 'financial_statement/financial_details.html', locals())
-
-
-
-def calc_flow_by_section(section_flow_list):
-    for sfl in section_flow_list:
-        for s in sfl:
-            print(s.account) 
 
 
