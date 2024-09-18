@@ -22,7 +22,8 @@ def query(request):
     print(lst)
     return HttpResponse('chenggong')
 
-# def get_all_projects(request):
+def get_all_projects(request):
+    return HttpResponse('all projects')
 
 
 @csrf_exempt
