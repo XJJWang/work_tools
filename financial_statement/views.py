@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Project, CapitalFlow, User, Permission, ProjectInfo, Section
 
@@ -21,20 +22,24 @@ def query(request):
     print(lst)
     return HttpResponse('chenggong')
 
+# def get_all_projects(request):
 
+
+@csrf_exempt
 def create_project(request):
     if request.method == "POST":
         name = request.POST.get("name")
-        territorial_bond_total = request.POST.get("territorial_bond_total")
-        treasury_bond_total = request.POST.get("treasury_bond_total")
+        print(name)
+        abbr = request.POST.get("abbr")
+        year = request.POST.get("year")
         new_project = Project()
         new_project.name = name
-        new_project.territorial_bond_total = territorial_bond_total
-        new_project.treasury_bond_total = treasury_bond_total
+        new_project.abbr = abbr
+        new_project.year = year
         new_project.save()
-        return redirect('/financial_statement/')
+        return HttpResponse("Save project")
     if request.method == "GET":
-        return render(request, 'financial_statement/create_project.html')
+        return HttpResponse('GET create project')
 
 
 def main(request):
