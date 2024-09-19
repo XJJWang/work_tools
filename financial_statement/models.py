@@ -31,13 +31,13 @@ class CapitalFlow(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     pay_time = models.DateField()
-    account = models.DecimalField(
+    amount = models.DecimalField(
         max_digits=11, decimal_places=2, default=0.00)
     capital_type = models.CharField(max_length=50)
     remark = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
-        return self.project.name + self.section.name + str(self.account)
+        return self.project.name + self.section.name + str(self.amount)
 
 
 class User(models.Model):

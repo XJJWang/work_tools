@@ -56,7 +56,7 @@ def add_capital_flow(request):
         section = Section.objects.get(pk=section_pk)
 
         pay_time = request.POST.get('pay_time')
-        account = request.POST.get('account')
+        amount = request.POST.get('amount')
         capital_type = request.POST.get('capital_type')
         remark = request.POST.get('remark')
 
@@ -64,7 +64,7 @@ def add_capital_flow(request):
     project=project,
     section=section,
     pay_time=pay_time,
-    account=account,
+    amount=amount,
     capital_type=capital_type,
     remark=remark,
 )
@@ -74,12 +74,12 @@ def sections_payment(capital_flow):
     capital_flow_dict = {}
     for cf in capital_flow:
         section = cf.section
-        account = cf.account
+        amount = cf.amount
 
         if section in capital_flow_dict:
-            capital_flow_dict[section].append(account)
+            capital_flow_dict[section].append(amount)
         else:
-            capital_flow_dict[section] = [account]
+            capital_flow_dict[section] = [amount]
     return capital_flow_dict
 
 
@@ -87,7 +87,7 @@ def investment_type_payment(capital_flow):
     capital_flow_dict = {}
     for cf in capital_flow:
         capital_type = cf.capital_type
-        account = cf.account
+        amount = cf.amount
 
 
 
