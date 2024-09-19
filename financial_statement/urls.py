@@ -10,5 +10,6 @@ urlpatterns = [
     path('all_projects/', views.get_all_projects, name="get_all_projects"),
     path('investment_type/',views.add_project_investment_type, name="add_project_investment_type"),
     path('section/', views.add_section, name="add_section"),
-    path('captial_flow', views.add_capital_flow, name="add_capital_flow")
+    path('captial_flow/', views.add_capital_flow, name="add_capital_flow"),
+    path("financial_statement/", views.view_financial_statement, name="view_financial_statement"),
 ]

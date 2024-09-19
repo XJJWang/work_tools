@@ -70,6 +70,40 @@ def add_capital_flow(request):
 )
     return HttpResponse('Save capital flow.')
 
+def sections_payment(capital_flow):
+    capital_flow_dict = {}
+    for cf in capital_flow:
+        section = cf.section
+        account = cf.account
+
+        if section in capital_flow_dict:
+            capital_flow_dict[section].append(account)
+        else:
+            capital_flow_dict[section] = [account]
+    return capital_flow_dict
+
+
+def investment_type_payment(capital_flow):
+    capital_flow_dict = {}
+    for cf in capital_flow:
+        capital_type = cf.capital_type
+        account = cf.account
+
+
+
+    
+
+def total_payment():
+    pass 
+
+
+def view_financial_statement(request):
+    if request.method == "GET":
+        pk = request.GET.get('pk')
+        all_capital_flow = CapitalFlow.objects.filter(project__pk=pk)
+        capital_flow_dict = sections_payment(all_capital_flow)
+        print(capital_flow_dict)
+        return HttpResponse('View financial statement')
 
 
 def get_all_projects(request):
