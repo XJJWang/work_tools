@@ -70,7 +70,8 @@ def add_capital_flow(request):
 )
     return HttpResponse('Save capital flow.')
 
-def sections_payment(capital_flow):
+
+def calc_sections_payment(capital_flow):
     capital_flow_dict = {}
     for cf in capital_flow:
         section = cf.section
@@ -80,29 +81,37 @@ def sections_payment(capital_flow):
             capital_flow_dict[section].append(amount)
         else:
             capital_flow_dict[section] = [amount]
-    return capital_flow_dict
+    sections_payment = {key: sum(value[1:]) for key, value in capital_flow_dict.items()}
+    print(sections_payment)
+    return sections_payment
 
 
-def investment_type_payment(capital_flow):
+def calc_investment_type_payment(capital_flow):
     capital_flow_dict = {}
     for cf in capital_flow:
         capital_type = cf.capital_type
         amount = cf.amount
-
-
-
+    
+    if capital_type in capital_flow_dict:
+        capital_flow_dict[capital_type].append(amount)
+    else:
+        capital_flow_dict[capital_type] = [amount]
+    return capital_flow_dict
     
 
-def total_payment():
-    pass 
+def total_payment(sections_payment, investment_type_payment):
+    pass
+    
 
 
 def view_financial_statement(request):
     if request.method == "GET":
         pk = request.GET.get('pk')
-        all_capital_flow = CapitalFlow.objects.filter(project__pk=pk)
-        capital_flow_dict = sections_payment(all_capital_flow)
-        print(capital_flow_dict)
+        capital_flow = CapitalFlow.objects.filter(project__pk=pk)
+        sections_payment = calc_sections_payment(capital_flow)
+        investment_type_payment = calc_investment_type_payment(capital_flow)
+        print(sections_payment)
+        print(investment_type_payment)
         return HttpResponse('View financial statement')
 
 

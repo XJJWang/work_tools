@@ -20,12 +20,14 @@ class ProjectInvestment(models.Model):
 
 class Section(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=50)
+    company = models.CharField(max_length=100)
+    abbr = models.CharField(max_length=50)
     amount = models.DecimalField(
         max_digits=11, decimal_places=2, default=0.00)
 
     def __str__(self):
-        return self.project.name + '|' + self.name  
+        return self.project.abbr + '|' + self.abbr  
 
 class CapitalFlow(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -37,7 +39,7 @@ class CapitalFlow(models.Model):
     remark = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
-        return self.project.name + self.section.name + str(self.amount)
+        return self.project.abbr + self.section.abbr + str(self.amount)
 
 
 class User(models.Model):
