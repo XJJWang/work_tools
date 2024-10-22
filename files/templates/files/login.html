@@ -4,19 +4,33 @@
 {% block title %}登录{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>登录</h1>
-        <form method="post">
-            {% csrf_token %}
-            {% bootstrap_form form layout='horizontal' %}
-            {% buttons submit='登录' %}{% endblock %}
-        </form>
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="text-center">登录</h1>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">登录</button>
+                            </div>
+                        </form>
+                    </div>
+                    {% if messages %}
+                        <div class="card-footer">
+                            <ul class="list-unstyled">
+                                {% for message in messages %}
+                                    <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

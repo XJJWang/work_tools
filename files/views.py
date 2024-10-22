@@ -3,6 +3,7 @@ import os
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from whoosh.index import create_in, open_dir
 from whoosh.fields import Schema, TEXT
@@ -13,16 +14,23 @@ from .models import Document
 
 def custom_login(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('file_list')
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('file_list')  # Redirect to your desired page after login
+            else:
+                messages.error(request, '用户名或密码错误。')
         else:
-            messages.error(request, '用户名或密码错误')
-    return render(request, 'files/login.html')
+            # Handle form errors, e.g., display them in the template
+            pass  # Or add specific error handling logic
+    else:
+        form = AuthenticationForm()
 
+    return render(request, 'files/login.html', {'form': form})
 
 @login_required
 def model_form_upload(request):
