@@ -2,6 +2,8 @@ import os
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 from whoosh.index import create_in, open_dir
 from whoosh.fields import Schema, TEXT
 from whoosh.qparser import QueryParser
@@ -9,36 +11,20 @@ from whoosh.qparser import QueryParser
 from .forms import DocumentForm
 from .models import Document
 
-# 创建索引目录
-if not os.path.exists("indexdir"):
-    print('exists indexdir正在使用')
-    os.mkdir("indexdir")
+def custom_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('file_list')
+        else:
+            messages.error(request, '用户名或密码错误')
+    return render(request, 'files/login.html')
 
-# 定义索引的Schema
-schema = Schema(content=TEXT(stored=True))
 
-# 创建或打开索引
-if not os.listdir("indexdir"):
-    print('exists indexdir正在使用')
-    ix = create_in("indexdir", schema)
-else:
-    ix = open_dir("indexdir")
-
-def index_file(filepath):
-    writer = ix.writer()
-    print('index file正在使用')
-    with open(filepath, 'r', encoding='utf-8') as file:
-        content = file.read()
-        writer.add_document(content=content)
-    writer.commit()
-
-def search(query_str):
-    print('serch正在使用')
-    with ix.searcher() as searcher:
-        query = QueryParser("content", ix.schema).parse(query_str)
-        results = searcher.search(query)
-        return [hit['content'] for hit in results]
-
+@login_required
 def model_form_upload(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
@@ -49,10 +35,12 @@ def model_form_upload(request):
         form = DocumentForm()
     return render(request, 'files/model_form_upload.html', {'form': form})
 
+@login_required
 def file_list(request):
     documents = Document.objects.all()
     return render(request, 'files/file_list.html', {'documents': documents})
 
+@login_required
 def search_files(request):
     query = request.GET.get('q')
     results = []
@@ -61,6 +49,7 @@ def search_files(request):
         results = Document.objects.filter(document__icontains=query)
     return render(request, 'files/search_results.html', {'results': results})
 
+@login_required
 def delete_file(request, pk):
     document = get_object_or_404(Document, pk=pk)
     if document.document:

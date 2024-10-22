@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 class Document(models.Model):
     description = models.CharField(max_length=255, blank=True)

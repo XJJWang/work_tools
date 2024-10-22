@@ -1,26 +1,24 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文件列表</title>
-</head>
-<body>
-    <h1>已上传文件</h1>
-    <ul>
-        {% for document in documents %}
-            <li>
-                {{ document.description }} - <a href="{{ document.document.url }}">{{ document.document.name }}</a>
-                <form action="{% url 'delete_file' document.pk %}" method="post" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit">删除</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
-    <form method="get" action="{% url 'search_files' %}">
-        <input type="text" name="q" placeholder="搜索文件...">
-        <button type="submit">搜索</button>
-    </form>
-</body>
-</html>
+{% extends 'files/base.html' %}
+
+{% block title %}文件列表{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>已上传文件</h1>
+        <ul>
+            {% for document in documents %}
+                <li>
+                    {{ document.description }} - <a href="{{ document.document.url }}">{{ document.document.name }}</a>
+                    <form action="{% url 'delete_file' document.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">删除</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+        <form method="get" action="{% url 'search_files' %}">
+            <input type="text" name="q" placeholder="搜索文件..." class="form-control">
+            <button type="submit" class="btn btn-primary">搜索</button>
+        </form>
+    </div>
+{% endblock %}

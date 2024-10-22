@@ -1,17 +1,81 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>上传文件</title>
-</head>
-<body>
-    <h1>选择一个文件</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">上传</button>
-    </form>
-    <p><a href="{% url 'file_list' %}">浏览文件</a></p>
-</body>
-</html>
+{% extends 'files/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}上传文件{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1>上传文件</h1>
+
+            <form method="post" enctype="multipart/form-data" id="my-dropzone" class="dropzone">
+                {% csrf_token %}
+                <div class="dz-message" data-dz-message><span>拖放文件到这里或点击上传</span></div>
+                <div class="fallback">
+                    {{ form.document }}
+                </div>
+            </form>
+
+            <div class="mb-3">
+                <label for="id_description" class="form-label">文件描述:</label>
+                {{ form.description.errors }}
+                <textarea class="form-control" id="id_description" name="description" rows="3" placeholder="请输入文件描述">{{ form.description.value|default:'' }}</textarea>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">  
+                <button type="submit" class="btn btn-primary btn-lg" form="my-dropzone">上传</button>
+            </div>
+
+            <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+            <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+                <style>
+                    #my-dropzone {
+                        border: 2px dashed #0087F7;
+                        border-radius: 5px;
+                        background-color: #f8f9fa;
+                        min-height: 200px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                    }
+                    #my-dropzone .fallback {
+                        display: none;
+                    }
+                    .dropzone.dz-started .fallback {
+                        display: block;
+                    }
+                    .dropzone .dz-message {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 100%;
+                        font-size: 1.2rem;
+                        color: #6c757d;
+                    }
+                    .dropzone .dz-preview {
+                        margin: 10px;
+                        border-radius: 5px;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    }
+                </style>
+                <script>
+                    Dropzone.options.myDropzone = {
+                        url: "{% url 'model_form_upload' %}", // Your Django view URL
+                        paramName: "document", // The name of the file input field in your Django form
+                        maxFilesize: 20, // MB
+                        acceptedFiles: ".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.zip,.xlsx", // Allowed file types
+                        addRemoveLinks: true,
+                        dictRemoveFile: "删除文件",
+                        init: function() {
+                            this.on("sending", function(file, xhr, formData) {
+                                formData.append("description", document.getElementById("id_description").value);
+                                // Add other form data here if needed
+                            });
+                        }
+                    };
+                </script>
+            </div>
+        </div>
+    </div>
+{% endblock %}

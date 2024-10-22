@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'dms',
     'import_export',
     'files',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -115,6 +116,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = False
 
+LOGIN_URL = '/files/login/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

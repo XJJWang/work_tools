@@ -1,17 +1,15 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>搜索结果</title>
-</head>
-<body>
-    <h1>搜索结果</h1>
-    <ul>
-        {% for document in results %}
-            <li>{{ document.document.name }} - <a href="{{ document.document.url }}">{{ document.document.name }}</a></li>
-        {% endfor %}
-    </ul>
-    <p><a href="{% url 'file_list' %}">回到文件列表</a></p>
-</body>
-</html>
+{% extends 'files/base.html' %}
+
+{% block title %}搜索结果{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>搜索结果</h1>
+        <ul>
+            {% for document in results %}
+                <li>{{ document.document.name }} - <a href="{{ document.document.url }}">{{ document.document.name }}</a></li>
+            {% endfor %}
+        </ul>
+        <p><a href="{% url 'file_list' %}" class="btn btn-secondary">返回文件列表</a></p>
+    </div>
+{% endblock %}
