@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'financial_statement',
     'dms',
     'import_export',
+    'files',
 ]
 
 MIDDLEWARE = [
