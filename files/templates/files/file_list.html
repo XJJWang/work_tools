@@ -5,10 +5,21 @@
 {% block content %}
     <div class="container">
         <h1>已上传文件</h1>
+        
+        <!-- 标签筛选 -->
+        <form method="get" action="">
+            <select name="tag" onchange="this.form.submit()">
+                <option value="">所有标签</option>
+                {% for tag in tags %}
+                    <option value="{{ tag.name }}" {% if tag.name == selected_tag %}selected{% endif %}>{{ tag.name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+
         <ul>
             {% for document in documents %}
                 <li>
-                    {{ document.description }} - <a href="{{ document.document.url }}">{{ document.document.name }}</a>
+                    {{ document.description }} - <a href="{{ document.document.url }}">{{ document.filename }}</a>
                     <form action="{% url 'delete_file' document.pk %}" method="post" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger btn-sm">删除</button>
@@ -16,9 +27,5 @@
                 </li>
             {% endfor %}
         </ul>
-        <form method="get" action="{% url 'search_files' %}">
-            <input type="text" name="q" placeholder="搜索文件..." class="form-control">
-            <button type="submit" class="btn btn-primary">搜索</button>
-        </form>
     </div>
 {% endblock %}

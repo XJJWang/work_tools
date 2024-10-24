@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'import_export',
     'files',
     'django_bootstrap5',
+    'taggit',
 ]
 
 MIDDLEWARE = [
